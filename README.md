@@ -70,7 +70,7 @@ The APIs related to an hotel object are shown in the table below:
 
 | API                       | Detail
 | ---                       | ---
-| GET /v1/hotels/:id        | Return detailed information about a business
+| GET /v1/hotels/:id        | Return detailed information about an hotel
 | POST /v1/hotels           | Add an hotel
 | PUT /v1/hotels/:id        | Update details of an hotel
 | DELETE /v1/hotels/:id     | Delete an hotel
