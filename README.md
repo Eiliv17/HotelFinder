@@ -54,9 +54,9 @@ Request Parameters:
 
 | Field         | Description                           | Type
 | ---           | ---                                   | ---
-| latitude      | Latitude of a given location          | decimal
-| longitude     | Longitude of a given location         | decimal
-| radius        | Optional. Default is 5000 meters      | int
+| latitude      | Latitude of a given location          | float
+| longitude     | Longitude of a given location         | float
+| radius        | Optional. Default is 5000 meters      | float
 | offset        | Optional. Defaul is 0                 | int
 | limit         | Optional. Default is 20               | int
 
@@ -153,6 +153,12 @@ By default you'll need to provide a .env file or set up the environment variable
 | MONGODB_URI           | The URI for connecting to your MongoDB server
 | DB_NAME               | The name of the database (inside MongoDB) where you want to store the users and posts
 | GO_ENV                | Tells go if the build is for production or not, set it to "production" to enable it
+
+Also be aware that for the API to work you need to set up a Geo Index inside MongoDB using the following commands inside MongoShell:
+
+```javascript
+db.collName.createIndex({fieldName: "2dsphere"})
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
