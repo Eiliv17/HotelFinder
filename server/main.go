@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/Eiliv17/HotelFinder/controllers"
 	"github.com/Eiliv17/HotelFinder/initializers"
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +27,7 @@ func main() {
 	api := r.Group("/v1")
 	{
 		// search for nearby hotels endpoint
-		api.GET("/search/nearby")
+		api.GET("/search/nearby", controllers.SearchNearby)
 
 		// hotels endpoints
 		hotels := api.Group("/hotels")
