@@ -18,10 +18,7 @@ type Hotel struct {
 	Location   Point  `json:"location" bson:"location"`
 }
 
-var coll *mongo.Collection = initializers.DB.Database(initializers.DBName).Collection("hotels")
-
 func CreateHotel(name string, starRating int, address string, state string, location Point) (Hotel, error) {
-
 	// check if star rating is valid
 	if !(starRating >= 0 && starRating <= 5) {
 		return Hotel{}, errors.New("starRating not valid")
@@ -37,6 +34,9 @@ func CreateHotel(name string, starRating int, address string, state string, loca
 }
 
 func RetrieveHotel(ctx context.Context, id string) (Hotel, error) {
+	// initialize database
+	coll := initializers.DB.Database(initializers.DBName).Collection("hotels")
+
 	// transform id
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -58,6 +58,9 @@ func RetrieveHotel(ctx context.Context, id string) (Hotel, error) {
 }
 
 func AddHotel(ctx context.Context, hotel Hotel) error {
+	// initialize database
+	coll := initializers.DB.Database(initializers.DBName).Collection("hotels")
+
 	// insert it
 	_, err := coll.InsertOne(ctx, hotel)
 	if err != nil {
@@ -68,6 +71,9 @@ func AddHotel(ctx context.Context, hotel Hotel) error {
 }
 
 func UpdateHotel(ctx context.Context, id string, hotel Hotel) error {
+	// initialize database
+	coll := initializers.DB.Database(initializers.DBName).Collection("hotels")
+
 	// transform id
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -85,6 +91,9 @@ func UpdateHotel(ctx context.Context, id string, hotel Hotel) error {
 }
 
 func DeleteHotel(ctx context.Context, id string) error {
+	// initialize database
+	coll := initializers.DB.Database(initializers.DBName).Collection("hotels")
+
 	// transform id
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -102,8 +111,11 @@ func DeleteHotel(ctx context.Context, id string) error {
 }
 
 func SearchHotel(ctx context.Context, coordinates Point, radius float64, offset int, limit int) ([]Hotel, error) {
+	// initialize database
+	coll := initializers.DB.Database(initializers.DBName).Collection("hotels")
+
 	// covnersion to radiants
-	radiusRadiants := radius / 6371.01
+	radiusRadiants := radius / 1000 / 6371.01
 
 	// create the stages
 	geoStage := bson.D{
