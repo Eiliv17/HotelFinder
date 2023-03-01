@@ -21,6 +21,21 @@ func SearchNearby(c *gin.Context) {
 	offsetRaw := c.Query("offset")
 	limitRaw := c.Query("limit")
 
+	// required values check
+	if latitudeRaw == "" || longitudeRaw == "" {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{
+			"error": "coordinates not present",
+		})
+		return
+	}
+
+	if radiusRaw == "" {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{
+			"error": "radius not present",
+		})
+		return
+	}
+
 	// converts the raw queries
 	latitude, err := strconv.ParseFloat(latitudeRaw, 64)
 	if err != nil {
@@ -62,6 +77,7 @@ func SearchNearby(c *gin.Context) {
 		return
 	}
 
+	// create point object with provided coordinates
 	point, err := models.CreatePoint(latitude, longitude)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
@@ -70,6 +86,7 @@ func SearchNearby(c *gin.Context) {
 		return
 	}
 
+	// find hotel based on point coordinates and parameters
 	hotels, err := models.SearchHotel(
 		c.Request.Context(),
 		point,
